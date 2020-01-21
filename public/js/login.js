@@ -124,6 +124,7 @@ $(document).on("click", ".loginAuth", event => {
       } else {
         // do something because login failed
         console.log("login failed")
+        $("#password").val("").focus();
       }
     })
   }
