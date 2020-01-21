@@ -1,25 +1,9 @@
 {
-  "development": {
-    "username": "root",
-    "password": "password",
-    "database": "events_db",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
-  },
-  "test": {
-    "username": "root",
-    "password": "password",
-    "database": "events_db",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
-  },
   "production": {
-    "username": "root",
-    "password": "password",
-    "database": "events_db",
-    "host": "127.0.0.1",
+    "username": "tem85ecjgnqu8u7d",
+    "password": "pww5i3igooh9mwtd",
+    "database": "tgpmygdm8173pt3t",
+    "host": "nba02whlntki5w2p.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "mysql",
     "operatorsAliases": false
   }
