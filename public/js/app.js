@@ -1,6 +1,7 @@
-
+// globally set userId
 let userId = localStorage.getItem("user")
 
+// checks if an object is empty e.g: let emptyObj = {}
 let isObjEmpty = obj => {
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
@@ -10,6 +11,7 @@ let isObjEmpty = obj => {
   return true;
 }
 
+// function to render initial display components
 let renderEventsPage = () => {
   // side nav
   renderSideNav();
@@ -17,28 +19,37 @@ let renderEventsPage = () => {
   renderContent()
 }
 
+// render Content based on argument
 let renderContent = content => {
   switch (content) {
     case "myevents":
+      // get events made by user from server
       getEventsByUserId(userId).then(events => {
+        // then render the components to display on page
         renderMyEvents(events);
       })
       break;
     case "create":
+      // render create event components to display on page
       renderCreatePage();
       break;
     case "attending":
+      // get events that user is attending from server
       getEventsAttending(userId).then(events => {
+        // then render the components to display on a page
         renderEventsAttending(events);
       })
       break;
     default:
+      // get all events from server
       getEventInfo().then(events => {
+        // then render the components to display on a page
         renderEvents(events);
       })
   }
 }
 
+// function to render display components based on data sent through events parameter
 let renderEvents = events => {
   let content = $(".contents")
   content.empty().append($("<h4>").text("Events List"), $("<hr>"))
@@ -48,6 +59,7 @@ let renderEvents = events => {
     let host = $("<div>").addClass("d-flex text-muted").text(`Hosted by ${event.host.name}`)
     let description = $("<p>").addClass("card-text").text(event.description)
     let btn = $("<button>").addClass("btn btn-dark attend").data("id", event.id).text("Attend")
+    // get all attendee information for specific event from the server
     getAttendees(event.id).then(attendees => {
       let guests = $("<div>").addClass("ttip ml-auto").text("Guests: " + attendees.length)
       let tooltip = $("<span>").addClass("ttiptext")
@@ -66,6 +78,7 @@ let renderEvents = events => {
   })
 }
 
+// function to render events that the user is attending based on data sent through events parameter
 let renderEventsAttending = events => {
   let content = $(".contents")
   content.empty().append($("<h4>").text("Events I'm Attending"), $("<hr>"))
@@ -93,6 +106,7 @@ let renderEventsAttending = events => {
   })
 }
 
+// function to render events that the user has created
 let renderMyEvents = events => {
   let content = $(".contents")
   content.empty().append($("<h4>").text("Events I'm Hosting"), $("<hr>"))
@@ -121,6 +135,7 @@ let renderMyEvents = events => {
   })
 }
 
+// function to render components for the create event display
 let renderCreatePage = () => {
   let content = $(".contents")
   let title = $("<input>").addClass("form-control").attr({
@@ -141,6 +156,7 @@ let renderCreatePage = () => {
   content.empty().append($("<h4>").text("Create an Event"), $("<hr>"), form)
 }
 
+// function to render components for the side nav display
 let renderSideNav = () => {
   let sideNav = $(".sidenav");
   let btn1 = $("<button>").addClass("nav-link btn events").text("View Events")
@@ -155,6 +171,7 @@ let renderSideNav = () => {
   sideNav.empty().append(ul)
 }
 
+// function to render the components for the profile page
 let renderProfilePage = () => {
   let contents = $(".contents");
   getUserInfo(userId).then(user => {
@@ -198,6 +215,7 @@ let renderProfilePage = () => {
   })
 }
 
+// API CALLS
 let getEventInfo = () => {
   return $.ajax({
     url: "/api/event",
@@ -280,39 +298,51 @@ let getAttendees = eventId => {
   })
 }
 
+// ----- Event Listeners
+
+// on page ready, render main page components
+$(document).on("ready", renderEventsPage())
+
+// -- Nav Links
+// logout link
 $(".logout").on("click", event => {
   event.preventDefault();
   window.localStorage.removeItem("user");
   window.location.reload();
 })
 
+// profile link
 $(".profile").on("click", event => {
   event.preventDefault();
   renderProfilePage();
 })
 
-$(document).on("click", ".create", event => {
-  event.preventDefault();
-  renderContent("create")
-})
-
-$(document).on("ready", renderEventsPage())
-
+// -- Side Nav Links
+// view events link
 $(document).on("click", ".events", event => {
   event.preventDefault();
   renderContent();
 })
 
+// my events link
 $(document).on("click", ".myevents", event => {
   event.preventDefault();
   renderContent("myevents");
 })
 
+// attending link
 $(document).on("click", ".attending", event => {
   event.preventDefault();
   renderContent("attending");
 })
 
+// create event link
+$(document).on("click", ".create", event => {
+  event.preventDefault();
+  renderContent("create")
+})
+
+// create event button
 $(document).on("click", ".create-event", event => {
   event.preventDefault()
   let eventTitle = $("#event-title").val().trim();
@@ -333,6 +363,7 @@ $(document).on("click", ".create-event", event => {
   }
 })
 
+// update button in profile component
 $(document).on("click", ".update-user", event => {
   event.preventDefault();
   let password = $("#password").val().trim();
@@ -359,8 +390,10 @@ $(document).on("click", ".update-user", event => {
   }
 })
 
+// attend button in view events component
 $(document).on("click", "button.attend", event => {
   event.preventDefault();
+  // let btn = this button since this = document
   let btn = event.target;
   let eventId = $(btn).data("id");
   let data = {
@@ -376,6 +409,7 @@ $(document).on("click", "button.attend", event => {
   })
 })
 
+// delete button in my events component
 $(document).on("click", "button.delete", event => {
   event.preventDefault();
   let btn = event.target;
@@ -385,6 +419,7 @@ $(document).on("click", "button.delete", event => {
   })
 })
 
+// unattend button in attending component
 $(document).on("click", "button.unattend", event => {
   event.preventDefault();
   let btn = event.target;
@@ -398,6 +433,7 @@ $(document).on("click", "button.unattend", event => {
   })
 })
 
+// update button in my events component
 $(document).on("click", "button.update-event", event => {
   event.preventDefault();
   let btn = event.target;

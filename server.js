@@ -3,6 +3,7 @@ var app = express();
 var path = require("path");
 var PORT = process.env.PORT || 3000;
 
+// set static root directory
 app.use(express.static("public"));
 
 // Parse request body as JSON

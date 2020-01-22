@@ -1,14 +1,4 @@
-// signin event listener
-$(document).on("click", ".signin", event => {
-  event.preventDefault();
-  renderAuthForms("signin")
-})
-
-$(document).on("click", ".register", event => {
-  event.preventDefault();
-  renderAuthForms("register")
-})
-
+// function to render dynamic forms for registration and login
 let renderAuthForms = type => {
   let div1 = $("<div>").addClass("form-group");
   let div2 = $("<div>").addClass("form-group");
@@ -59,6 +49,19 @@ let renderAuthForms = type => {
   }
 }
 
+// event listener for sign in link
+$(document).on("click", ".signin", event => {
+  event.preventDefault();
+  renderAuthForms("signin")
+})
+
+// event listener for register link
+$(document).on("click", ".register", event => {
+  event.preventDefault();
+  renderAuthForms("register")
+})
+
+// event listener for register button
 $(document).on("click", ".registerAuth", event => {
   event.preventDefault();
   let email = $("#email");
@@ -80,23 +83,25 @@ $(document).on("click", ".registerAuth", event => {
       name: name.val().trim()
     }
     $.ajax({
-      url: "/api/user/register",
+      url: "/api/user",
       type: "POST",
       data: user
     }).then(conf => {
       if (conf) {
-        // do something after registration
+        // user successfully registered, so do the following
         window.localStorage.setItem("user", conf)
         $("#auth").empty();
         window.location.reload();
       } else {
-        // registration failed
+        // user failed to registered, so do the following
         console.log("registration failed")
+        $("#email").val("").focus();
       }
     })
   }
 })
 
+// event listener for login button
 $(document).on("click", ".loginAuth", event => {
   event.preventDefault();
   let email = $("#email");
@@ -106,23 +111,25 @@ $(document).on("click", ".loginAuth", event => {
   } else if (pw.val().trim().length < 1) {
     pw.focus();
   } else {
+    // set user data to send to server
     let user = {
       email: $("#email").val(),
       password: $("#password").val(),
     }
+    // make a PUT request to server for validating user credentials
     $.ajax({
-      url: "/api/user/login",
+      url: "/api/user",
       type: "PUT",
       data: user,
     }).then(conf => {
       if (conf) {
-        // do something after login
+        // user validated, so do the following
         console.log("logged in")
         window.localStorage.setItem("user", conf)
         $("#auth").empty();
         window.location.reload();
       } else {
-        // do something because login failed
+        // server validation failed, so do the following
         console.log("login failed")
         $("#password").val("").focus();
       }
