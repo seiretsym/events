@@ -1,12 +1,20 @@
 {
+  "development": {
+    "username": "root",
+    "password": "password",
+    "database": "events_db",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "password",
+    "database": "events_db",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
   "production": {
-    "username": "tem85ecjgnqu8u7d",
-    "password": "pww5i3igooh9mwtd",
-    "database": "tgpmygdm8173pt3t",
-    "host": "nba02whlntki5w2p.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "use_env_variable": "JAWSDB_URL",
+    "dialect": "mysql"
   }
 }
-
-mysql://tem85ecjgnqu8u7d:pww5i3igooh9mwtd@nba02whlntki5w2p.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/tgpmygdm8173pt3t
